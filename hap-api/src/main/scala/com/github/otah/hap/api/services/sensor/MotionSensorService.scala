@@ -1,15 +1,15 @@
 package com.github.otah.hap.api.services.sensor
 
-import com.github.otah.hap.api._
-import com.github.otah.hap.api.characteristics.{MotionDetectedCharacteristic, StatusActiveCharacteristic}
-import com.github.otah.hap.api.services.{Characteristics, OptionalName}
+import com.github.otah.hap.api.characteristics._
+import com.github.otah.hap.api.services._
 
-trait MotionSensorService extends AccessoryService with OptionalName {
+trait MotionSensorService extends SpecializedService with OptionalName {
 
   override final val serviceType = hap.service.sensor.motion
 
-  def motionDetected: MotionDetectedCharacteristic
-  def statusActive: Option[StatusActiveCharacteristic] = None
+  def motionDetected: Required[MotionDetectedCharacteristic]
+  def statusActive: Optional[StatusActiveCharacteristic] = None
 
-  lazy val characteristics: Characteristics = Seq(motionDetected) ++ name ++ statusActive //TODO other optional characteristics
+  //TODO other optional characteristics
+  override def all: AllSupported = AllSupported(name, motionDetected, statusActive)
 }

@@ -1,14 +1,13 @@
 package com.github.otah.hap.api.services
 
-import com.github.otah.hap.api._
-import com.github.otah.hap.api.characteristics.{OutletInUseCharacteristic, PowerStateCharacteristic}
+import com.github.otah.hap.api.characteristics._
 
-trait OutletService extends AccessoryService with OptionalName {
+trait OutletService extends SpecializedService with OptionalName {
 
   override final val serviceType = hap.service.outlet
 
-  def powerState: PowerStateCharacteristic
-  def inUse: OutletInUseCharacteristic
+  def powerState: Required[PowerStateCharacteristic]
+  def inUse: Required[OutletInUseCharacteristic]
 
-  override lazy val characteristics: Seq[Characteristic[_]] = Seq(powerState, inUse) ++ name
+  override def all: AllSupported = AllSupported(name, powerState, inUse)
 }

@@ -4,7 +4,9 @@ import com.github.otah.hap.api.characteristics.NameCharacteristic
 
 trait UseLabelAsName extends OptionalName {
 
+  this: SpecializedService with IdStrategy.Automatic =>
+
   def label: String
 
-  override def name: Option[NameCharacteristic] = Some(NameCharacteristic(label))
+  override def name = Some(NameCharacteristic(label))
 }

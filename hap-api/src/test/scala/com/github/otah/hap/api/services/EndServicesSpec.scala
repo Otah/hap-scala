@@ -1,6 +1,8 @@
 package com.github.otah.hap.api.services
 
+import com.github.otah.hap.api.Identified
 import com.github.otah.hap.api.characteristics.PowerStateCharacteristic
+import com.github.otah.hap.api.services.sensor._
 import org.junit.runner.RunWith
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatestplus.junit.JUnitRunner
@@ -8,21 +10,20 @@ import org.scalatestplus.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class EndServicesSpec extends AnyFlatSpec {
 
-  import sensor._
-  
   def stub: Nothing = throw new Exception()
 
-  abstract class SPwr {
-    def powerState: PowerStateCharacteristic = stub
+  trait EasiestStrategy extends SpecializedService with IdStrategy.Explicit
+  abstract class SPwr extends EasiestStrategy {
+    def powerState: Identified[PowerStateCharacteristic] = stub
   }
 
   "End-user services" should "need only their characteristics to be specified" in {
 
-    new ContactSensorService {
+    new ContactSensorService with EasiestStrategy {
       override def contactDetected = stub
     }
 
-    new MotionSensorService {
+    new MotionSensorService with EasiestStrategy {
       override def motionDetected = stub
     }
 
@@ -40,12 +41,12 @@ class EndServicesSpec extends AnyFlatSpec {
       override def inUse = stub
     }
 
-    new SpeakerService {
+    new SpeakerService with EasiestStrategy {
       override def mute = stub
       override def volume = stub
     }
 
-    new ProgrammableSwitchService {
+    new ProgrammableSwitchService with EasiestStrategy {
       override def programmableSwitchEvent = stub
     }
   }

@@ -1,13 +1,13 @@
 package com.github.otah.hap.api.services
 
 import com.github.otah.hap.api.characteristics.ProgrammableSwitchEvent
-import com.github.otah.hap.api.{AccessoryService, LowLevelCharacteristic}
 
-trait ProgrammableSwitchService extends AccessoryService with OptionalName {
+trait ProgrammableSwitchService extends SpecializedService with OptionalName {
 
   override final val serviceType = hap.service.programmableSwitch
 
-  def programmableSwitchEvent: ProgrammableSwitchEvent
+  def programmableSwitchEvent: Required[ProgrammableSwitchEvent]
 
-  lazy val characteristics: Seq[LowLevelCharacteristic] = Seq(programmableSwitchEvent) ++ name //TODO namespace & label index
+  //TODO label index
+  override def all: AllSupported = AllSupported(name, programmableSwitchEvent)
 }

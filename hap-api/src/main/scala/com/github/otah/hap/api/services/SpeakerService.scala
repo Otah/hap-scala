@@ -1,15 +1,14 @@
 package com.github.otah.hap.api.services
 
-import com.github.otah.hap.api.AccessoryService
 import com.github.otah.hap.api.characteristics._
 
-trait SpeakerService extends AccessoryService with OptionalName {
+trait SpeakerService extends SpecializedService with OptionalName {
 
   override final val serviceType = hap.service.speaker
 
-  def mute: MuteCharacteristic
+  def mute: Required[MuteCharacteristic]
 
-  def volume: Option[VolumeCharacteristic]
+  def volume: Optional[VolumeCharacteristic]
 
-  lazy val characteristics: Characteristics = Seq(mute) ++ volume ++ name
+  override def all: AllSupported = AllSupported(name, volume, mute)
 }

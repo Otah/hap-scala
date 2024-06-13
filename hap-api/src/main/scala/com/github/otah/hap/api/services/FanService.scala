@@ -1,15 +1,14 @@
 package com.github.otah.hap.api.services
 
-import com.github.otah.hap.api.AccessoryService
-import com.github.otah.hap.api.characteristics.{PowerStateCharacteristic, RotationSpeedCharacteristic}
+import com.github.otah.hap.api.characteristics._
 
-trait FanService extends AccessoryService with OptionalName {
+trait FanService extends SpecializedService with OptionalName {
 
   override final val serviceType = hap.service.fan
 
-  def powerState: PowerStateCharacteristic
+  def powerState: Required[PowerStateCharacteristic]
 
-  def rotationSpeed: Option[RotationSpeedCharacteristic]
+  def rotationSpeed: Optional[RotationSpeedCharacteristic]
 
-  override lazy val characteristics: Characteristics = Seq(powerState) ++ rotationSpeed ++ name
+  override def all: AllSupported = AllSupported(name, powerState, rotationSpeed)
 }

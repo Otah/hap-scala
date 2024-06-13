@@ -1,16 +1,15 @@
 package com.github.otah.hap.api.services.sensor
 
-import com.github.otah.hap.api._
 import com.github.otah.hap.api.characteristics._
-import com.github.otah.hap.api.services.OptionalName
+import com.github.otah.hap.api.services._
 
-trait HumiditySensorService extends AccessoryService with OptionalName {
+trait HumiditySensorService extends SpecializedService with OptionalName {
 
   override final val serviceType = hap.service.sensor.humidity
 
-  def currentHumidity: CurrentRelativeHumidityCharacteristic
+  def currentHumidity: Required[CurrentRelativeHumidityCharacteristic]
 
-  def statusActive: Option[StatusActiveCharacteristic] = None
+  def statusActive: Optional[StatusActiveCharacteristic] = None
 
-  override def characteristics: Seq[LowLevelCharacteristic] = Seq(currentHumidity) ++ name ++ statusActive
+  override def all: AllSupported = AllSupported(name, currentHumidity, statusActive)
 }

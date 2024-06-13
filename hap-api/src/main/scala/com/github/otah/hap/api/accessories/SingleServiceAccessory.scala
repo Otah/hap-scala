@@ -1,6 +1,7 @@
 package com.github.otah.hap.api.accessories
 
-import com.github.otah.hap.api.services.BatteryService
+import com.github.otah.hap.api._
+import com.github.otah.hap.api.services._
 import com.github.otah.hap.api.{AccessoryService, HomeKitAccessory}
 
 /** Many HAP accessories are defined only with a single service.
@@ -13,7 +14,9 @@ trait SingleServiceAccessory extends HomeKitAccessory {
 
   this: AccessoryService =>
 
-  def services: Seq[AccessoryService] = Seq(this) ++ battery
+  def baseInstanceId = 30 // keeps enough space for Accessory Information service (IID 1) and its characteristics
 
-  def battery: Option[BatteryService] = None
+  def services: Seq[Identified[AccessoryService]] = Seq(InstanceId(baseInstanceId) -> this) ++ battery
+
+  def battery: Option[Identified[BatteryService]] = None
 }
